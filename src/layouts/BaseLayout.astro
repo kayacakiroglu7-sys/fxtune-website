@@ -1,0 +1,81 @@
+---
+export interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = 'FxTune - Platinum Studio Audio Production',
+  description = 'AI-powered mobile DAW with studio-grade mastering tools, real-time DSP, and collaborative cloud sync.',
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const ogImageURL = new URL('/og-image.png', Astro.site)
+const siteName = 'FxTune'
+---
+
+<!doctype html>
+<html lang="en" class="bg-deepspaceblack text-fxtxt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#08080A" />
+    <link rel="canonical" href={canonicalURL.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:image" content={ogImageURL.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL.href} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen antialiased">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  @layer base {
+    ::selection {
+      @apply bg-fxcyan/30 text-white;
+    }
+  }
+
+  @layer components {
+    .btn-primary {
+      @apply inline-flex items-center justify-center px-6 py-3 rounded-lg bg-platinum-gradient text-white font-semibold transition-all hover:opacity-90 hover:shadow-lg hover:shadow-fxcyan/20;
+    }
+
+    .btn-secondary {
+      @apply inline-flex items-center justify-center px-6 py-3 rounded-lg border border-fxcyan/30 text-fxcyan font-semibold transition-all hover:bg-fxcyan/10;
+    }
+
+    .glass-panel {
+      @apply bg-white/[0.03] border border-white/[0.06] rounded-2xl backdrop-blur-sm;
+    }
+
+    .section-container {
+      @apply max-w-7xl mx-auto px-6 py-20;
+    }
+  }
+</style>

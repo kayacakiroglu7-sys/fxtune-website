@@ -1,0 +1,175 @@
+---
+export interface Props {
+  title?: string
+  activeDoc?: string
+}
+
+const { title = 'FxTune Documentation', activeDoc = '' } = Astro.props
+
+const description = 'FxTune technical documentation - architecture, DSP engine, and AI systems.'
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const ogImageURL = new URL('/og-image.png', Astro.site)
+
+const docs = [
+  { title: 'Getting Started', slug: 'getting-started' },
+  { title: 'Architecture Overview', slug: 'architecture-overview' },
+  { title: 'Master Blueprint', slug: 'master-blueprint' },
+  { title: 'GhostHand AI', slug: 'ghosthand-ai' },
+  { title: 'GhostHand Training', slug: 'ghosthand-training' },
+  { title: 'Phase Vocoder', slug: 'phase-vocoder' },
+  { title: 'C++ Performance', slug: 'cpp-performance' },
+  { title: 'Brand Guidelines', slug: 'brand-guidelines' },
+  { title: 'Privacy Policy', slug: 'privacy' },
+]
+---
+
+<!doctype html>
+<html lang="en" class="bg-deepspaceblack text-fxtxt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#08080A" />
+    <link rel="canonical" href={canonicalURL.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FxTune" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:image" content={ogImageURL.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL.href} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen antialiased">
+    <div class="flex">
+      <!-- Sidebar -->
+      <aside
+        class="fixed top-0 left-0 h-screen w-64 bg-studioblack border-r border-white/[0.06] overflow-y-auto z-40"
+      >
+        <div class="p-6">
+          <a href="/" class="text-lg font-bold bg-platinum-gradient bg-clip-text text-transparent"
+            >FxTune</a
+          >
+          <p class="text-xs text-fxtxt/40 mt-1">Documentation</p>
+        </div>
+        <nav class="px-4 pb-6">
+          <ul class="space-y-1">
+            {
+              docs.map((doc) => (
+                <li>
+                  <a
+                    href={`/docs/${doc.slug}/`}
+                    class={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                      activeDoc === doc.slug
+                        ? 'bg-fxcyan/10 text-fxcyan'
+                        : 'text-fxtxt/50 hover:text-fxtxt hover:bg-white/[0.03]'
+                    }`}
+                  >
+                    {doc.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 ml-64">
+        <header
+          class="sticky top-0 z-30 bg-deepspaceblack/80 backdrop-blur-md border-b border-white/[0.06] h-14 flex items-center px-8"
+        >
+          <div class="flex-1"></div>
+          <a href="/" class="text-sm text-fxtxt/50 hover:text-fxcyan transition-colors">Home</a>
+        </header>
+        <div class="max-w-3xl mx-auto px-8 py-12">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  .prose {
+    @apply text-fxtxt/80 leading-relaxed;
+  }
+
+  .glass-panel {
+    @apply bg-white/[0.03] border border-white/[0.06] rounded-2xl backdrop-blur-sm;
+  }
+
+  .prose h1 {
+    @apply text-3xl font-bold text-fxtxt mb-6;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-semibold text-fxtxt mt-12 mb-4 pb-2 border-b border-white/[0.06];
+  }
+
+  .prose h3 {
+    @apply text-xl font-semibold text-fxtxt mt-8 mb-3;
+  }
+
+  .prose p {
+    @apply mb-4;
+  }
+
+  .prose ul {
+    @apply mb-4 ml-6 list-disc space-y-2;
+  }
+
+  .prose ol {
+    @apply mb-4 ml-6 list-decimal space-y-2;
+  }
+
+  .prose code {
+    @apply font-mono text-sm bg-studioblack px-1.5 py-0.5 rounded text-fxcyan;
+  }
+
+  .prose pre {
+    @apply bg-studioblack rounded-xl p-6 mb-6 overflow-x-auto border border-white/[0.06];
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0 text-fxtxt/70;
+  }
+
+  .prose blockquote {
+    @apply border-l-2 border-fxcyan/30 pl-4 italic text-fxtxt/60 my-6;
+  }
+
+  .prose table {
+    @apply w-full mb-6 border-collapse;
+  }
+
+  .prose th {
+    @apply text-left text-sm font-semibold text-fxtxt p-3 border-b border-white/[0.06];
+  }
+
+  .prose td {
+    @apply text-sm text-fxtxt/70 p-3 border-b border-white/[0.06];
+  }
+
+  .prose a {
+    @apply text-fxcyan hover:underline;
+  }
+</style>

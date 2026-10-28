@@ -1,0 +1,144 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro'
+---
+
+<DocsLayout title="FxTune - Privacy Policy" activeDoc="privacy">
+  <div class="prose">
+    <h1>Privacy Policy</h1>
+
+    <p><em>Last updated: September 13, 2026</em></p>
+
+    <p>
+      FxTune ("we", "our", or "us") operates the FxTune mobile application (the "App"). This page
+      informs you of our policies regarding the collection, use, and disclosure of personal
+      information when you use our App.
+    </p>
+
+    <h2>1. Information Collection and Use</h2>
+
+    <h3>Local-First Architecture</h3>
+    <p>
+      FxTune is designed as a <strong>local-first application</strong>. All audio recordings, projects,
+      and user data are stored locally on your device. We do not have access to your audio content
+      or creative work.
+    </p>
+
+    <h3>Data We Do NOT Collect</h3>
+    <ul>
+      <li>Audio recordings or music projects</li>
+      <li>Microphone input data (processed locally only)</li>
+      <li>User-generated content</li>
+      <li>Account information (no account required)</li>
+    </ul>
+
+    <h3>Data We Collect</h3>
+    <ul>
+      <li><strong>Usage Analytics:</strong> Anonymous app usage statistics to improve the App</li>
+      <li><strong>Crash Reports:</strong> Technical crash data to fix bugs (via Firebase Crashlytics)</li>
+      <li><strong>Device Information:</strong> Device model, OS version, and audio capabilities for optimization</li>
+    </ul>
+
+    <h2>2. Third-Party Services</h2>
+
+    <p>The App uses the following third-party services:</p>
+
+    <ul>
+      <li>
+        <strong>Firebase Crashlytics</strong> — Crash reporting
+        (<a href="https://firebase.google.com/support/privacy/" target="_blank" rel="noopener"
+          >Privacy Policy</a
+        >)
+      </li>
+      <li>
+        <strong>RevenueCat</strong> — In-app purchase management
+        (<a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener"
+          >Privacy Policy</a
+        >)
+      </li>
+      <li>
+        <strong>Google AdMob</strong> — Advertising (optional, can be disabled)
+        (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener"
+          >Privacy Policy</a
+        >)
+      </li>
+    </ul>
+
+    <h2>3. Audio and Microphone Data</h2>
+
+    <p>
+      FxTune requires microphone access to function. <strong>All audio processing occurs entirely
+      on your device</strong> using our native C++ audio engine. No audio data is transmitted to
+      external servers.
+    </p>
+
+    <p>The microphone permission is used for:</p>
+    <ul>
+      <li>Recording audio input</li>
+      <li>Real-time audio analysis and visualization</li>
+      <li>AI-powered performance coaching (processed locally)</li>
+    </ul>
+
+    <h2>4. Cloud Sync (Optional)</h2>
+
+    <p>
+      If you enable Cloud Sync, your project data is encrypted and stored on our secure servers.
+      This feature is entirely optional and can be disabled at any time.
+    </p>
+
+    <ul>
+      <li>Data is encrypted in transit (TLS 1.3) and at rest (AES-256)</li>
+      <li>You can delete your cloud data at any time from the App settings</li>
+      <li>We do not access or analyze your cloud-stored content</li>
+    </ul>
+
+    <h2>5. Children's Privacy</h2>
+
+    <p>
+      Our App does not address anyone under the age of 13. We do not knowingly collect personally
+      identifiable information from children under 13.
+    </p>
+
+    <h2>6. Changes to This Policy</h2>
+
+    <p>
+      We may update our Privacy Policy from time to time. We will notify you of any changes by
+      posting the new Privacy Policy on this page and updating the "Last updated" date.
+    </p>
+
+    <h2>7. Contact Us</h2>
+
+    <p>
+      If you have any questions about this Privacy Policy, please contact us at:
+    </p>
+
+    <p>
+      <strong>Email:</strong> privacy@fxtune.app<br />
+      <strong>Website:</strong> <a href="https://fxtune.app">https://fxtune.app</a>
+    </p>
+
+    <h2>8. GDPR Compliance (EU Users)</h2>
+
+    <p>For users in the European Union:</p>
+
+    <ul>
+      <li><strong>Data Controller:</strong> FxTune</li>
+      <li><strong>Legal Basis:</strong> Legitimate interest (app functionality and improvement)</li>
+      <li><strong>Data Retention:</strong> Analytics data is retained for 26 months</li>
+      <li><strong>Your Rights:</strong> Access, rectification, erasure, data portability</li>
+      <li>
+        <strong>Contact:</strong> privacy@fxtune.app for any GDPR-related requests
+      </li>
+    </ul>
+
+    <h2>9. California Residents (CCPA)</h2>
+
+    <p>If you are a California resident, you have the right to:</p>
+
+    <ul>
+      <li>Know what personal information is being collected</li>
+      <li>Request deletion of your personal information</li>
+      <li>Opt-out of the sale of your personal information (we do not sell data)</li>
+      <li>Non-discrimination for exercising your privacy rights</li>
+    </ul>
+  </div>
+</DocsLayout>

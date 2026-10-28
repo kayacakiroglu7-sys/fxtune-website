@@ -1,0 +1,50 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro'
+---
+
+<DocsLayout title="FxTune Docs - Getting Started" activeDoc="getting-started">
+  <div class="prose">
+    <h1>Getting Started with FxTune</h1>
+
+    <p>
+      FxTune is a platinum-grade mobile DAW powered by AI. This documentation covers the
+      architecture, DSP engine, and AI systems that make FxTune possible.
+    </p>
+
+    <h2>Prerequisites</h2>
+    <ul>
+      <li>Android device with API level 26+ (Android 8.0 Oreo)</li>
+      <li>ARM64 processor with NEON SIMD support</li>
+      <li>Minimum 4GB RAM for neural inference</li>
+    </ul>
+
+    <h2>Quick Links</h2>
+    <ul>
+      <li>
+        <a href="/docs/architecture-overview/">Architecture Overview</a> — Component topology and data
+        flow
+      </li>
+      <li>
+        <a href="/docs/master-blueprint/">Master Blueprint</a> — Complete engineering specification
+      </li>
+      <li><a href="/docs/ghosthand-ai/">GhostHand AI</a> — The AI assistant system</li>
+      <li><a href="/docs/cpp-performance/">C++ Performance</a> — DSP engine internals</li>
+    </ul>
+
+    <h2>System Overview</h2>
+    <p>FxTune is built on three pillars:</p>
+    <ol>
+      <li>
+        <strong>C++ Native Engine</strong> — Real-time audio processing with AAudio MMAP, ARM NEON SIMD,
+        and lock-free data structures
+      </li>
+      <li>
+        <strong>Jetpack Compose UI</strong> — 60/120fps glassmorphism interface with state hoisting and
+        isolated recomposition
+      </li>
+      <li>
+        <strong>GhostHand AI</strong> — Neural audio coaching with genre-aware preset synthesis
+      </li>
+    </ol>
+  </div>
+</DocsLayout>

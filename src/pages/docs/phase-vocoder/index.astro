@@ -1,0 +1,113 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro'
+---
+
+<DocsLayout title="FxTune Docs - Phase Vocoder" activeDoc="phase-vocoder">
+  <div class="prose">
+    <h1>Phase Vocoder Integration Runbook</h1>
+
+    <blockquote>
+      <p>
+        Sixth knowledge asset. Detailed step-by-step guide for reactivating the Phase Vocoder
+        integration in <code>FxTuneEngine::setBpm</code>.
+      </p>
+    </blockquote>
+
+    <h2>Prerequisites</h2>
+    <ul>
+      <li><code>dsp/PhaseVocoder.h</code> is present in the repository ✅</li>
+      <li>Build cache is released (see BUILD_MAINTENANCE.md § 1)</li>
+      <li>
+        <code>setBpm</code> currently only calls <code>mBpm.store(b)</code> + <code
+          >mAiWorker-&gt;setTempo(b)</code
+        >
+      </li>
+    </ul>
+
+    <h2>Step 1: Header Include</h2>
+    <p>In <code>fxtune-engine.h</code>, after the existing block:</p>
+    <pre><code>#include "dsp/BarkWorker.h"</code></pre>
+    <p>Add the following include:</p>
+    <pre><code>#include "dsp/PhaseVocoder.h"</code></pre>
+
+    <h2>Step 2: Engine Members</h2>
+    <p>In the same header file, directly after:</p>
+    <pre><code>PitchShiftState mPitchShiftState;</code></pre>
+    <p>Add these members:</p>
+    <pre><code>// Phase Vocoder for pitch-preserving BPM-sync of imported beats / AI stems.
+std::unique_ptr&lt;dsp::PhaseVocoder&gt; mPhaseVocoder;
+std::atomic&lt;float&gt; mSourceBeatBpm&#123;0.0f&#125;;
+std::atomic&lt;float&gt; mVocoderStretchRatio&#123;1.0f&#125;;</code></pre>
+
+    <h2>Step 3: Header Declaration</h2>
+    <p>In the same header, after:</p>
+    <pre><code>void setBpm(float bpm);
+float getBpm() const;</code></pre>
+    <p>Add:</p>
+    <pre><code>/**
+ * Informs the engine of the source beat's intrinsic BPM so the
+ * Phase-Vocoder can pitch-preserving time-stretch it onto the
+ * project's target BPM. Pass 0.0 to disable stretching.
+ */
+void setSourceBeatBpm(float sourceBpm);</code></pre>
+
+    <h2>Step 4: Implementation in setBpm</h2>
+    <p>In <code>fxtune-engine.cpp</code>, replace the existing block:</p>
+    <pre><code>void FxTuneEngine::setBpm(float b) &#123;
+    mBpm.store(b);
+    if (mAiWorker) mAiWorker-&gt;setTempo(b);
+&#125;</code></pre>
+    <p>With the extended version:</p>
+    <pre><code>void FxTuneEngine::setBpm(float b) &#123;
+    mBpm.store(b);
+    if (mAiWorker) mAiWorker-&gt;setTempo(b);
+    // Reconfigure the phase vocoder if a source-beat BPM is known.
+    const float sourceBpm = mSourceBeatBpm.load(std::memory_order_relaxed);
+    if (mPhaseVocoder &amp;&amp; sourceBpm &gt; 1.0f &amp;&amp; b &gt; 1.0f) &#123;
+        const float ratio = sourceBpm / b;
+        const float clamped = std::clamp(ratio, 0.5f, 2.0f);
+        mVocoderStretchRatio.store(clamped, std::memory_order_relaxed);
+        mPhaseVocoder-&gt;setStretchRatio(clamped);
+    &#125;
+&#125;</code></pre>
+
+    <h2>Step 5: New Function setSourceBeatBpm</h2>
+    <p>Directly below <code>setBpm</code>, add:</p>
+    <pre><code>void FxTuneEngine::setSourceBeatBpm(float b) &#123;
+    mSourceBeatBpm.store(b);
+    if (!mPhaseVocoder) &#123;
+        mPhaseVocoder = std::make_unique&lt;dsp::PhaseVocoder&gt;(1024, 1.0f);
+    &#125;
+    const float target = mBpm.load(std::memory_order_relaxed);
+    if (target &gt; 1.0f &amp;&amp; b &gt; 1.0f) &#123;
+        const float ratio = std::clamp(b / target, 0.5f, 2.0f);
+        mVocoderStretchRatio.store(ratio, std::memory_order_relaxed);
+        mPhaseVocoder-&gt;setStretchRatio(ratio);
+    &#125;
+&#125;</code></pre>
+
+    <h2>Verification</h2>
+    <ol>
+      <li>
+        <strong>Compile-Check (RT Safety):</strong> Search for allocations in the audio callback — expected:
+        no hits in <code>onAudioReady</code>
+      </li>
+      <li>
+        <strong>Runtime Test:</strong> Set BPM to 140, load a <code>_128bpm.wav</code> beat — stretch
+        ratio should automatically switch to 128/140 ≈ 0.914
+      </li>
+      <li>
+        <strong>RT Audit:</strong>
+        <code>static_assert</code> for <code>std::atomic&lt;float&gt;::is_always_lock_free</code> remains
+        valid (Vocoder atomics are float, lock-free on all ABIs)
+      </li>
+    </ol>
+
+    <h2>Rollback</h2>
+    <p>
+      If the integration causes issues: reverse all four steps in reverse order. <code
+        >dsp/PhaseVocoder.h</code
+      > remains unchanged as an independent module.
+    </p>
+  </div>
+</DocsLayout>

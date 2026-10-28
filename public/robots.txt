@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fxtune.app/sitemap-index.xml

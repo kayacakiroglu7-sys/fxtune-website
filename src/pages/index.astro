@@ -1,0 +1,326 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+
+<BaseLayout>
+  <!-- Navigation -->
+  <nav
+    class="fixed top-0 left-0 right-0 z-50 bg-deepspaceblack/80 backdrop-blur-md border-b border-white/[0.06]"
+  >
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <span class="text-xl font-bold bg-platinum-gradient bg-clip-text text-transparent"
+          >FxTune</span
+        >
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#features" class="text-sm text-fxtxt/70 hover:text-fxcyan transition-colors"
+          >Features</a
+        >
+        <a href="#technology" class="text-sm text-fxtxt/70 hover:text-fxcyan transition-colors"
+          >Technology</a
+        >
+        <a href="/docs/" class="text-sm text-fxtxt/70 hover:text-fxcyan transition-colors">Docs</a>
+        <a
+          href="https://github.com/fxtune"
+          class="text-sm text-fxtxt/70 hover:text-fxcyan transition-colors">GitHub</a
+        >
+      </div>
+      <a href="#download" class="btn-primary text-sm">Get FxTune</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <div class="absolute inset-0 bg-studio-surface opacity-50"></div>
+    <div
+      class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-fxcyan/5 rounded-full blur-[120px]"
+    >
+    </div>
+    <div
+      class="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] bg-fxmagenta/5 rounded-full blur-[100px]"
+    >
+    </div>
+
+    <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+      <div
+        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-fxcyan/20 bg-fxcyan/5 text-fxcyan text-sm mb-8"
+      >
+        <span class="w-2 h-2 rounded-full bg-fxcyan animate-pulse"></span>
+        AI-Powered Audio Production
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+        Platinum Studio<br />
+        <span class="bg-platinum-gradient bg-clip-text text-transparent">Audio Production</span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-fxtxt/60 max-w-2xl mx-auto mb-10">
+        Professional-grade mastering tools powered by neural AI. Real-time DSP, sub-10ms latency,
+        and collaborative cloud sync — all on your Android device.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#download" class="btn-primary text-base px-8 py-4"> Download for Android </a>
+        <a href="/docs/" class="btn-secondary text-base px-8 py-4"> Read the Docs </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="section-container">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Studio-Grade Power</h2>
+      <p class="text-fxtxt/50 max-w-2xl mx-auto">
+        Inspired by SSL Consoles, Neve 8078, Universal Audio, and Manley Labs.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="glass-panel p-6">
+        <div class="w-12 h-12 rounded-lg bg-fxcyan/10 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-fxcyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">AI GhostHand Assistant</h3>
+        <p class="text-sm text-fxtxt/50">
+          Neural audio coaching that adapts to your genre and style. Real-time DSP parameter
+          suggestions with one-tap application.
+        </p>
+      </div>
+
+      <div class="glass-panel p-6">
+        <div class="w-12 h-12 rounded-lg bg-fxmagenta/10 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-fxmagenta" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">Sub-10ms Latency</h3>
+        <p class="text-sm text-fxtxt/50">
+          AAudio MMAP via Oboe with exclusive low-latency mode. Real-time safe C++ DSP with ARM NEON
+          SIMD acceleration.
+        </p>
+      </div>
+
+      <div class="glass-panel p-6">
+        <div class="w-12 h-12 rounded-lg bg-fxgold/10 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-fxgold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">5-Stage Workflow</h3>
+        <p class="text-sm text-fxtxt/50">
+          Beat Staging, HUD & Pitch, Performance Coaching, Vocal Chain, and Ghost-Take — a complete
+          production pipeline.
+        </p>
+      </div>
+
+      <div class="glass-panel p-6">
+        <div class="w-12 h-12 rounded-lg bg-fxdarkpurple/10 flex items-center justify-center mb-4">
+          <svg
+            class="w-6 h-6 text-fxdarkpurple"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">3D Spatial Vocal Guide</h3>
+        <p class="text-sm text-fxtxt/50">
+          Front-camera powered distance tracking with real-time HUD overlay. Perfect mic technique,
+          guided by AI.
+        </p>
+      </div>
+
+      <div class="glass-panel p-6">
+        <div
+          class="w-12 h-12 rounded-lg bg-electricpurple/10 flex items-center justify-center mb-4"
+        >
+          <svg
+            class="w-6 h-6 text-electricpurple"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">Cloud Sync & Collaboration</h3>
+        <p class="text-sm text-fxtxt/50">
+          Shared sessions, community leaderboards, and Pro-tier cloud AI inference for advanced
+          mastering.
+        </p>
+      </div>
+
+      <div class="glass-panel p-6">
+        <div class="w-12 h-12 rounded-lg bg-vugreen/10 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">Phase Vocoder BPM Sync</h3>
+        <p class="text-sm text-fxtxt/50">
+          Artifact-free time-stretching for imported beats and AI stems. Automatic BPM matching with
+          pitch preservation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Section -->
+  <section id="technology" class="section-container">
+    <div class="glass-panel p-8 md:p-12">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-bold mb-6">Built for Performance</h2>
+          <p class="text-fxtxt/60 mb-6">
+            FxTune's C++ audio engine is engineered for real-time safety with zero allocations in
+            the audio callback. ARM NEON SIMD kernels accelerate mixing, pitch detection, and stem
+            separation.
+          </p>
+          <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-fxcyan"></span>
+              13 SIMD DSP kernels in NeonUtils.h
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-fxcyan"></span>
+              Lock-free atomic parameters (compile-time verified)
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-fxcyan"></span>
+              CPU load shedding at 92% threshold
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-fxcyan"></span>
+              50+ telemetry parameters at 60fps
+            </li>
+            <li class="flex items-center gap-3 text-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-fxcyan"></span>
+              TFLite neural inference (pitch, stems, denoising)
+            </li>
+          </ul>
+        </div>
+        <div class="bg-studioblack rounded-xl p-6 font-mono text-sm">
+          <pre
+            class="text-fxtxt/70"><code><span class="text-fxcyan">// Real-time safe audio callback</span>
+<span class="text-fxmagenta">void</span> FxTuneEngine::<span class="text-fxgold">onAudioReady</span>(
+    oboe::AudioStream *stream,
+    <span class="text-fxmagenta">void</span> *audioData,
+    <span class="text-fxmagenta">int32_t</span> numFrames) &#123;
+  <span class="text-fxcyan">// Zero allocations in RT path</span>
+  <span class="text-fxcyan">// SPSC lock-free ring buffer</span>
+  <span class="text-fxcyan">// NEON SIMD mix + detect</span>
+  mixTracksNeon(output, input, numFrames);
+  detectPeakNeon(peakL, peakR, numFrames);
+&#125;</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section id="download" class="section-container text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">Get FxTune</h2>
+    <p class="text-fxtxt/50 max-w-xl mx-auto mb-8">
+      Available on Android. Pro features include unlimited cloud AI inference, advanced mastering
+      profiles, and priority support.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="https://play.google.com/store/apps/details?id=com.audiopro.latenzfix"
+        class="btn-primary text-base px-8 py-4"
+      >
+        Google Play Store
+      </a>
+      <a href="/docs/" class="btn-secondary text-base px-8 py-4"> View Documentation </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/[0.06] py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <span class="text-lg font-bold bg-platinum-gradient bg-clip-text text-transparent"
+            >FxTune</span
+          >
+          <p class="text-sm text-fxtxt/40 mt-2">Platinum Studio Audio Production</p>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold mb-3">Product</h4>
+          <ul class="space-y-2 text-sm text-fxtxt/50">
+            <li><a href="#features" class="hover:text-fxcyan transition-colors">Features</a></li>
+            <li>
+              <a href="#technology" class="hover:text-fxcyan transition-colors">Technology</a>
+            </li>
+            <li><a href="#download" class="hover:text-fxcyan transition-colors">Download</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold mb-3">Developers</h4>
+          <ul class="space-y-2 text-sm text-fxtxt/50">
+            <li><a href="/docs/" class="hover:text-fxcyan transition-colors">Documentation</a></li>
+            <li>
+              <a href="https://github.com/fxtune" class="hover:text-fxcyan transition-colors"
+                >GitHub</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold mb-3">Legal</h4>
+          <ul class="space-y-2 text-sm text-fxtxt/50">
+            <li>
+              <a href="/privacy/" class="hover:text-fxcyan transition-colors">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="mailto:press@fxtune.app" class="hover:text-fxcyan transition-colors"
+                >press@fxtune.app</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/[0.06] pt-8 text-center text-xs text-fxtxt/30">
+        &copy; 2026 FxTune. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</BaseLayout>

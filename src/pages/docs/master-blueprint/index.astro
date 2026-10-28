@@ -1,0 +1,133 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro'
+---
+
+<DocsLayout title="FxTune Docs - Master Blueprint" activeDoc="master-blueprint">
+  <div class="prose">
+    <h1>FX TUNE Master Architecture &amp; Engineering Blueprint</h1>
+    <p>
+      <strong>Version:</strong> 2.0 (Ultimate Refactoring &amp; Feature Complete)<br />
+      <strong>Role:</strong> Principal Android Audio DSP Engineer, UI/UX Architect &amp; Hip-Hop Musicologist.<br
+      />
+      <strong>Goal:</strong> Zero-latency, 60/120fps fluid, AI-driven mobile DAW.
+    </p>
+
+    <blockquote>
+      <p>
+        Third canonical knowledge asset. Contains the complete architecture specification and
+        verified implementation status matrix against the actual codebase.
+      </p>
+    </blockquote>
+
+    <h2>Part 1: Musicological DSP Rules &amp; AI Knowledge Base</h2>
+
+    <h3>Subgenre &amp; Vocal Chain Specifications</h3>
+
+    <p><strong>UK / NY / DE Drill (Luciano, Pop Smoke):</strong></p>
+    <ul>
+      <li><em>Metric:</em> 140–145 BPM, syncopated off-beat snares, gliding 808s</li>
+      <li>
+        <em>Vocal Chain:</em> Dry/Direct (close-miking). High-Pass strict 110 Hz (against 808 mud). Presence
+        Boost +3 dB @ 1.5–3 kHz, highs rounded above 10 kHz. Aggressive FET Compression (Ratio 6:1–8:1,
+        Fast Attack 5 ms, 6–10 dB GR, R-Vox-Style)
+      </li>
+      <li><em>Space:</em> Extremely dry Short-Room-Reverb (&lt; 0.8s Decay, &lt; 10% Wet)</li>
+    </ul>
+
+    <p><strong>Cloud Rap (PNL, RIN, Yung Hurn):</strong></p>
+    <ul>
+      <li><em>Metric:</em> 110–130 BPM, Lo-Fi textures, Staccato/Legato switching</li>
+      <li>
+        <em>Vocal Chain:</em> Hard Autotune (Retune 0–3 ms, Humanize 0). High-Shelf Air-EQ (+4 dB @ 12
+        kHz). Spectral resonance suppression (Soothe2-logic) for sibilance. Multiband Opto-Compression
+        (CL1B-Style) for warmth
+      </li>
+      <li>
+        <em>Space:</em> Shimmer Reverb (Pitch-Shift +12 semitones, 4–8s Decay). Haas effect (&gt; 25ms
+        Delay for extreme stereo width)
+      </li>
+    </ul>
+
+    <p><strong>Dance-Rap / Pop-Hop (Ski Aggu, Miksu/Macloud):</strong></p>
+    <ul>
+      <li><em>Metric:</em> 120–135 BPM, 4-to-the-floor kicks</li>
+      <li>
+        <em>Vocal Chain:</em> Radical Mud-Cut (200–400 Hz, −4 dB). Transparent pop highs (3–5 kHz boost)
+      </li>
+      <li>
+        <em>Space:</em> Synchronized Ping-Pong Delays (1/8 or 1/16 Dotted) with Phaser modulation for
+        kinetic energy
+      </li>
+    </ul>
+
+    <h3>Frequency Hierarchy &amp; Low-End Management</h3>
+    <ul>
+      <li>
+        <strong>Kick vs. 808:</strong> Kick triggers Sidechain-Ducking that drops 808 at 50–80 Hz by 3–6
+        dB. Soft-Clipping/Saturation for mobile speaker playback
+      </li>
+      <li>
+        <strong>Flow Adaptation:</strong> Sequencer grid detects triplet flows and adapts hi-hat density
+        adaptively (e.g. from 1/16 to 1/32 triplets)
+      </li>
+    </ul>
+
+    <h2>Part 2: C++ Native Engine &amp; Latency Optimization</h2>
+
+    <h3>AAudio &amp; Threading Rules</h3>
+    <ul>
+      <li>
+        <strong>API Configuration:</strong>
+        <code>PerformanceMode::LowLatency</code> + <code>SharingMode::Exclusive</code> (Oboe/AAudio)
+      </li>
+      <li><strong>Buffer Size:</strong> Dynamic via <code>framesPerBurst</code></li>
+      <li>
+        <strong>Zero-Allocation Rule:</strong>
+        <code>new</code>, <code>malloc</code>, <code>push_back</code>, <code>std::mutex</code> strictly
+        forbidden in <code>dataCallback</code>
+      </li>
+      <li>
+        <strong>Lock-Free Parameters:</strong>
+        <code>std::atomic&lt;float&gt;</code> with <code>std::memory_order_relaxed</code>
+      </li>
+      <li>
+        <strong>CPU Load Shedding:</strong> At &gt; 92% utilization, dynamically disables expensive effects
+        (Graceful Degradation)
+      </li>
+    </ul>
+
+    <h3>GhostHand Live Beat-Carving (C++ Backend)</h3>
+    <pre><code>// Lock-free Dynamic Ducking based on Vocal RMS
+struct BeatCarverParams &#123;
+    std::atomic&lt;float&gt; vocalRmsEnergy&#123;0.0f&#125;;
+    std::atomic&lt;float&gt; beatCarveDepthDb&#123;0.0f&#125;;
+&#125;;
+// Inside Audio Callback:
+float rms = calculateRMS(vocalBuffer, numFrames);
+if (rms &gt; 0.05f) &#123;
+    float targetDucking = -4.5f * (rms / 0.5f);
+    params_.beatCarveDepthDb.store(
+        std::max(-6.0f, targetDucking),
+        std::memory_order_relaxed);
+&#125;</code></pre>
+
+    <h2>Part 3: Implementation Status Matrix</h2>
+    <table>
+      <thead>
+        <tr><th>Feature</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Oboe LowLatency + Exclusive + Float + Stereo</td><td>✅ Implemented</td></tr>
+        <tr><td>Zero-Allocation RT Callback</td><td>✅ Verified</td></tr>
+        <tr><td>Lock-Free Atomics (compile-time)</td><td>✅ Enforced</td></tr>
+        <tr><td>CPU Load Shedding &gt; 92%</td><td>✅ Implemented</td></tr>
+        <tr><td>Telemetry Vector (50 Floats)</td><td>✅ Implemented</td></tr>
+        <tr><td>Bluetooth Offset (245 ms)</td><td>✅ Binding exists</td></tr>
+        <tr><td>GhostHand Live Beat-Carving</td><td>✅ Implemented</td></tr>
+        <tr><td>3D Spatial Camera Guide</td><td>✅ Implemented</td></tr>
+        <tr><td>Phase-Vocoder BPM-Sync</td><td>✅ Implemented + JNI</td></tr>
+        <tr><td>Design-Spec UI Mockups</td><td>✅ In Cockpit integrated</td></tr>
+      </tbody>
+    </table>
+  </div>
+</DocsLayout>

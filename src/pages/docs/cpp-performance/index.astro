@@ -1,0 +1,155 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro'
+---
+
+<DocsLayout title="FxTune Docs - C++ Performance" activeDoc="cpp-performance">
+  <div class="prose">
+    <h1>Platzhirsch Blueprint: C++ Hardware &amp; Algorithm Architecture</h1>
+    <p>Competition Analysis &amp; Performance Blueprint for FxTune (Mobile DAW + Edge-AI)</p>
+
+    <blockquote>
+      <p>
+        Combines the system level (AAudio MMAP, Thermal Manager, Streaming VAE) with the algorithm
+        level (ARM NEON, YIN, RCU Graph, Phase Vocoder). Contains the verified implementation status
+        matrix against the FxTune codebase.
+      </p>
+    </blockquote>
+
+    <h2>Part A: System Level</h2>
+
+    <h3>Competition Gaps</h3>
+    <table>
+      <thead>
+        <tr><th>Challenge</th><th>Competitor Problem</th><th>FxTune Solution</th></tr>
+      </thead>
+      <tbody>
+        <tr
+          ><td>Android Latency</td><td>Standard buffers ~20–40 ms</td><td
+            >AAudio MMAP via Oboe (Exclusive + LowLatency) → &lt; 5 ms possible</td
+          ></tr
+        >
+        <tr
+          ><td>Thermal Throttling</td><td>AI diffusion heats GPU/NPU → glitches</td><td
+            >ADPF Hint-Sessions + Load Shedding</td
+          ></tr
+        >
+        <tr
+          ><td>Generation Wait</td><td>15–30s blocking</td><td>Async workers + Lock-Free-Queues</td
+          ></tr
+        >
+        <tr
+          ><td>UI CPU Load</td><td>Main-thread rendering</td><td
+            >Compose/Skia GPU pipeline + isolated Canvas Recomposition</td
+          ></tr
+        >
+        <tr
+          ><td>Memory Allocation</td><td><code>malloc</code> in audio thread</td><td
+            >SPSC-Ringbuffer + Pre-Allocation + Deferred Deletion</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>Part B: Algorithm Level</h2>
+
+    <h3>ARM NEON SIMD DSP (128-Bit, 4× float32/cycle)</h3>
+    <p>
+      <strong>FxTune Status:</strong> Exceeding implementation — <code>NeonUtils.h</code> provides 13
+      kernels (<code>mixTracksNeon</code>, <code>mixMonoToStereoAndReverbNeon</code>, <code
+        >DotProductNEON</code
+      >, <code>SumSquareNEON</code>, <code>MaxAbsNEON</code>, <code>mixStereoAndDetectPeakNeon</code
+      >, <code>interpolateStereoFrame2xNEON</code>, and more). Used in RT callback, AiWorker,
+      ScaleAnalyzer (including FP16 path), StemSplitter, and VocalAiTfLiteEngine.
+    </p>
+
+    <h3>Real-Time Voice-to-MIDI (YIN Family)</h3>
+    <p>
+      <strong>FxTune Status:</strong> Equivalent implementation — <code>AiWorker.cpp</code> uses NEON-accelerated
+      normalized autocorrelation with lag limits + parabolic interpolation. <code
+        >VocalAiTfLiteEngine</code
+      > adds zero-crossing and autocorrelation paths.
+    </p>
+
+    <h3>Lock-Free Audio Graph Topology (Atomic RCU)</h3>
+    <p>
+      <strong>FxTune Status:</strong> Pattern implemented — atomic <code>mBeatBuffer</code> swap (shared_ptr),
+      <code>mPendingLayers</code>/<code>mGarbageLayers</code> lock-free queues with worker <code
+        >trash.reset()</code
+      >.
+    </p>
+
+    <h3>Phase Vocoder Time-Stretching (BPM Sync)</h3>
+    <p>
+      <strong>FxTune Status:</strong> Implemented and integrated — <code>PhaseVocoder.h</code> with Hann
+      window, STFT phase correction, reset/setRatio at runtime, RT-safe. In <code>FxTuneEngine</code
+      > lazy-allocated via 1024-FFT, reconfigured in <code>setBpm</code> + <code
+        >setSourceBeatBpm</code
+      > (Clamp 0.5–2.0).
+    </p>
+
+    <h2>Status Matrix</h2>
+    <table>
+      <thead>
+        <tr><th>Pattern</th><th>Status</th><th>FxTune Evidence</th></tr>
+      </thead>
+      <tbody>
+        <tr
+          ><td>NEON SIMD Kernels</td><td>✅ Exceeding</td><td
+            >NeonUtils.h (13 kernels), RT callback, FP16 path</td
+          ></tr
+        >
+        <tr
+          ><td>YIN/Autocorrelation Pitch</td><td>✅ Equivalent</td><td
+            >AiWorker.cpp L135–155 (NEON + parabolic interp.)</td
+          ></tr
+        >
+        <tr
+          ><td>RCU/Deferred Deletion</td><td>✅ Pattern implemented</td><td
+            >mGarbageLayers, atomic buffer swap</td
+          ></tr
+        >
+        <tr
+          ><td>Phase Vocoder (BPM Sync)</td><td>✅ Implemented + integrated</td><td
+            >PhaseVocoder.h — Hann window, STFT, lazy alloc in FxTuneEngine</td
+          ></tr
+        >
+        <tr
+          ><td>AAudio MMAP</td><td>✅ Via Oboe</td><td
+            >Exclusive + LowLatency (fxtune-engine.cpp L180)</td
+          ></tr
+        >
+        <tr
+          ><td>Thermal Management</td><td>✅ Exceeding</td><td
+            >ADPF Hint-Sessions + mLoadShedding + 92% Kotlin threshold</td
+          ></tr
+        >
+        <tr
+          ><td>Streaming VAE</td><td>🔮 Future path</td><td
+            >GGML/GGUF quantization noted; currently TFLite</td
+          ></tr
+        >
+        <tr
+          ><td>Event-Sourcing Undo</td><td>🔮 Future path</td><td
+            >ProjectSession persistence present, Delta format open</td
+          ></tr
+        >
+      </tbody>
+    </table>
+
+    <h2>System Diagram</h2>
+    <pre><code>[ Microphone Input ] ---&gt; [ AAudio MMAP / Oboe ]
+                               |
+                               v
+                     [ SPSC Lock-Free Buffer ]
+                               |
+      +------------------------+------------------------+
+      |                                                 |
+      v                                                 v
+[ YIN/Autocorr Pitch ]                        [ ARM NEON DSP Mixer ]
+(Voice-to-MIDI)                               (Dynamic Audio Graph)
+      |                                                 ^
+      v                                                 |
+[ AI Inference (TFLite/GGML) ] -&gt; [ Phase Vocoder ] ---+
+(Denoising / Stems)            (BPM Alignment)</code></pre>
+  </div>
+</DocsLayout>
